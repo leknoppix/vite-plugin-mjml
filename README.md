@@ -51,6 +51,7 @@ Similarly, when building for production, all files in `input` will be compiled a
 | ----------- | -------------------- | ------------------------------------------------------------------------------- | ------------------------ |
 | `input`     | `string`             | Path to the directory in which `.mjml` files are stored                         | `resources/mail`         |
 | `output`    | `string`             | Path to the directory in which compiled files will be written                   | `resources/views/emails` |
+| `exclude`   | `string`             | Path to the directory to exclude `.mjml` files                                  | ``                       |
 | `extension` | `string`             | Extension that will be used by compiled `.mjml` files                           | `.blade.php`             |
 | `mjml`      | `MJMLParsingOptions` | Specific MJML [compiler options](https://documentation.mjml.io/#inside-node-js) | `{}`                     |
 | `watch`     | `boolean`            | Whether to watch and compile on the fly in development mode                     | `true`                   |

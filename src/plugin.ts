@@ -23,16 +23,23 @@ export function compileInput(input: string, options: CompileOptions) {
 	const content = fs.readFileSync(input, 'utf-8')
 
 	try {
-		const result = mjml(content, options.mjml)
-		const outputFile = input
-			.replace(options.input, options.output)
-			.replace('.mjml', options.extension)
-
-		fs.mkdirSync(path.dirname(outputFile), { recursive: true })
-		fs.writeFileSync(outputFile, result.html)
-
-		log(c.gray(`${input} -> ${outputFile} (${fs.statSync(outputFile).size} B)`))
-		debug.compile('Compilation done:', { result, outputFile })
+		if (input.match(/\.mjml/)) {
+			const result = mjml(content, options.mjml)
+			const outputFile = input
+				.replace(options.input, options.output)
+				.replace('.mjml', options.extension)
+			fs.mkdirSync(path.dirname(outputFile), { recursive: true })
+			fs.writeFileSync(outputFile, result.html)
+			log(c.gray(`${input} -> ${outputFile} (${fs.statSync(outputFile).size} B)`))
+			debug.compile('Compilation done:', { result, outputFile })
+		} else {
+			const outputFile = input
+				.replace(options.input, options.output)
+				.replace('.php', options.extension)
+			fs.mkdirSync(path.dirname(outputFile), { recursive: true })
+			fs.copyFileSync(input, outputFile)
+			log(c.gray(`${input} -> ${outputFile} (${fs.statSync(outputFile).size} B)`))
+		}
 	} catch (error: any) {
 		debug.compile('An error occured:', error)
 
@@ -70,8 +77,8 @@ export default function(options: Partial<Options> = {}): Plugin {
 
 			if (compileOptions.input.includes('*')) {
 				input = compileOptions.input
-			} else if (!compileOptions.input.match(/\.mjml/)) {
-				input = path.join(compileOptions.input, '**/*.mjml').replace(/\\/g, '/')
+			} else if (!compileOptions.input.match(/\.mjml|php/)) {
+				input = path.join(compileOptions.input, '**/*.{mjml,php}').replace(/\\/g, '/')
 			}
 
 			const excludes = Array.isArray(compileOptions.exclude)
