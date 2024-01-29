@@ -27,6 +27,27 @@ test('it compiles', async() => {
 
 	expect(fs.existsSync(path.resolve(output, 'mail', 'mail.html'))).toBe(true)
 })
+/***
+test('it can compile PHP and MJML files', async() => {
+	expect(fs.existsSync(output)).toBe(false)
+
+	await build({
+		root: fixtures,
+		logLevel: 'silent',
+		plugins: [
+			mjml({
+				log: false,
+				extension: '.html',
+				input: path.resolve(fixtures, 'with-php'),
+				output,
+			}),
+		],
+	})
+
+	expect(fs.existsSync(path.resolve(output, 'mail', 'mail.html'))).toBe(true)
+	expect(fs.existsSync(path.resolve(output, 'mail', 'structure.html'))).toBe(true)
+})
+*/
 
 test('it can exclude directories', async() => {
 	expect(fs.existsSync(output)).toBe(false)
